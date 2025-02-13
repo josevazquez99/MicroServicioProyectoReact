@@ -7,16 +7,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class IncidenciaServiceImpl implements IncidenciaService{
+public class IncidenciaServiceImpl implements IncidenciaService {
  
     private final IncidenciasRepository incidenciasRepository;
-
     private final EmailService emailService;
+
     @Override
     public Incidencia crearIncidencia(Incidencia incidencia) {
         Incidencia nuevaIncidencia = incidenciasRepository.save(incidencia);
 
         // Configurar el correo
+        String destinatario = "jv319069@gmail.com";
         String asunto = "Nueva Incidencia Reportada: " + incidencia.getTitulo();
         String mensaje = "Detalles de la incidencia:\n\n" +
                 "Número de Equipo: " + incidencia.getNumeroEquipo() + "\n" +
@@ -24,8 +25,7 @@ public class IncidenciaServiceImpl implements IncidenciaService{
                 "Descripción: " + incidencia.getDescripcion() + "\n" +
                 "Fecha: " + incidencia.getFecha();
 
-        // Enviar correo
-        emailService.enviarCorreo(asunto, mensaje);
+        emailService.enviarCorreo(destinatario, asunto, mensaje);
 
         return nuevaIncidencia;
     }
